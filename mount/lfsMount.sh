@@ -6,14 +6,14 @@ LFS=/mnt/lfs
 if [ ! -d $LFS ] ; then
 	sudo mkdir $LFS
 fi
-sudo mount -v -t ext3 /dev/sdb5 $LFS
+#sudo mount -v -t ext3 /dev/sdb5 $LFS
 
 i=6
 for dir in boot home usr usr/src opt ; do
 	if [ ! -d $LFS/$dir ] ; then
 		sudo mkdir $LFS/$dir
 	fi
-	sudo mount -v -t ext3 /dev/sdb$i $LFS/$dir
+	#sudo mount -v -t ext3 /dev/sdb$i $LFS/$dir
 	let "i+=1"
 done
 

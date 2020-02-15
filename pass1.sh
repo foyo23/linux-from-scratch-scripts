@@ -1,4 +1,5 @@
 #!/bin/bash
+LFS=/mnt/lfs
 
 LFS_TGT=$(uname -m)-lfs-linux-gnu
 
@@ -22,15 +23,15 @@ testToolchain ()
 
 
 ##########################
-# Binutils 2.22 - Pass 1 #
+# Binutils 2.34 - Pass 1 #
 ##########################
 
-tar -jxf binutils-2.22.tar.bz2
+tar -jxf binutils-2.34.tar.bz2
 
 mkdir -v binutils-build
 cd binutils-build
 
-../binutils-2.22/configure \
+../binutils-2.34/configure \
 	--target=$LFS_TGT --prefix=/tools \
 	--disable-nls --disable-werror
 
@@ -43,30 +44,30 @@ esac
 make install
 
 cd ..
-rm -rf binutils-build binutils-2.22
+rm -rf binutils-build binutils-2.34
 
 
 
 ######################
-# GCC 4.6.2 - Pass 1 #
+# GCC 9.2.0 - Pass 1 #
 ######################
 
-tar -jxf gcc-4.6.2.tar.bz2
-cd gcc-4.6.2
+tar -jxf gcc-9.2.0.tar.bz2
+cd gcc-9.2.0
 
-tar -jxf ../mpfr-3.1.0.tar.bz2
-mv -v mpfr-3.1.0 mpfr
-tar -Jxf ../gmp-5.0.4.tar.xz
-mv -v gmp-5.0.4 gmp
-tar -zxf ../mpc-0.9.tar.gz
-mv -v mpc-0.9 mpc
+tar -jxf ../mpfr-4.0.2.tar.bz2
+mv -v mpfr-4.0.2 mpfr
+tar -Jxf ../gmp-6.2.0.tar.xz
+mv -v gmp-6.2.0 gmp
+tar -zxf ../mpc-1.1.0.tar.gz
+mv -v mpc-1.1.0 mpc
 
-patch -Np1 -i ../gcc-4.6.2-cross_compile-1.patch
+patch -Np1 -i ../gcc-9.2.0-cross_compile-1.patch
 
 mkdir -v ../gcc-build
 cd ../gcc-build
 
-../gcc-4.6.2/configure \
+../gcc-9.2.0/configure \
     --target=$LFS_TGT --prefix=/tools \
     --disable-nls --disable-shared --disable-multilib \
     --disable-decimal-float --disable-threads \
@@ -83,50 +84,50 @@ ln -vs libgcc.a `$LFS_TGT-gcc -print-libgcc-file-name | \
 	sed 's/libgcc/&_eh/'`
 
 cd ..
-rm -rf gcc-build gcc-4.6.2
+rm -rf gcc-build gcc-9.2.0
 
 
 
 ###########################
-# Linux 3.2.6 API Headers #
+# Linux 5.5.3 API Headers #
 ###########################
 
-tar -zxf linux-3.2.6.tar.gz
-cd linux-3.2.6
+tar -zxf linux-5.5.3.tar.gz
+cd linux-5.5.3
 
 make mrproper
 make INSTALL_HDR_PATH=dest headers_install
 cp -rv dest/include/* /tools/include
 
 cd ..
-rm -rf linux-3.2.6
+rm -rf linux-5.5.3
 
 
 
 #########################
-# Glibc 2.14.1 - Pass 1 #
+# Glibc 2.31 - Pass 1 #
 #########################
 
-tar -jxf glibc-2.14.1.tar.bz2 
-cd glibc-2.14.1
+tar -jxf glibc-2.31.tar.bz2 
+cd glibc-2.31
 
-patch -Np1 -i ../glibc-2.14.1-gcc_fix-1.patch
-patch -Np1 -i ../glibc-2.14.1-cpuid-1.patch
+patch -Np1 -i ../glibc-2.31-gcc_fix-1.patch
+patch -Np1 -i ../glibc-2.31-cpuid-1.patch
 
 mkdir -v ../glibc-build
 cd ../glibc-build
 
-../glibc-2.14.1/configure --prefix=/tools \
-	--host=$LFS_TGT --build=$(../glibc-2.14.1/scripts/config.guess) \
+../glibc-2.31/configure --prefix=/tools \
+	--host=$LFS_TGT --build=$(../glibc-2.31/scripts/config.guess) \
 	--disable-profile --enable-add-ons \
-	--enable-kernel=2.6.25 --with-headers=/tools/include \
+	--enable-kernel=3.2 --with-headers=/tools/include \
 	libc_cv_forced_unwind=yes libc_cv_c_cleanup=yes
 
 make -j4
 make install
 
 cd ..
-rm -rf glibc-build glibc-2.14.1
+rm -rf glibc-build glibc-2.31
 
 
 
