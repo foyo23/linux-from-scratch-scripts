@@ -26,7 +26,7 @@ testToolchain ()
 # Binutils 2.34 - Pass 1 #
 ##########################
 
-tar -jxf binutils-2.34.tar.bz2
+tar -xf binutils-2.34.tar.xz
 
 mkdir -v binutils-build
 cd binutils-build
@@ -52,12 +52,12 @@ rm -rf binutils-build binutils-2.34
 # GCC 9.2.0 - Pass 1 #
 ######################
 
-tar -jxf gcc-9.2.0.tar.bz2
+tar -xf gcc-9.2.0.tar.xz
 cd gcc-9.2.0
 
-tar -jxf ../mpfr-4.0.2.tar.bz2
+tar -xf ../mpfr-4.0.2.tar.xzOB
 mv -v mpfr-4.0.2 mpfr
-tar -Jxf ../gmp-6.2.0.tar.xz
+tar -xf ../gmp-6.2.0.tar.xz
 mv -v gmp-6.2.0 gmp
 tar -zxf ../mpc-1.1.0.tar.gz
 mv -v mpc-1.1.0 mpc
@@ -92,7 +92,7 @@ rm -rf gcc-build gcc-9.2.0
 # Linux 5.5.3 API Headers #
 ###########################
 
-tar -zxf linux-5.5.3.tar.gz
+tar -xf linux-5.5.3.tar.xz
 cd linux-5.5.3
 
 make mrproper
@@ -108,7 +108,7 @@ rm -rf linux-5.5.3
 # Glibc 2.31 - Pass 1 #
 #########################
 
-tar -jxf glibc-2.31.tar.bz2 
+tar -xf glibc-2.31.tar.xz 
 cd glibc-2.31
 
 patch -Np1 -i ../glibc-2.31-gcc_fix-1.patch
